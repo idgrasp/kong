@@ -41,6 +41,13 @@ if kong_router_flavor == "expressions" then
       { service = { type = "foreign", reference = "services" }, },
       { expression = { type = "string", required = true }, },
       { priority = { type = "integer", required = true, default = 0 }, },
+      -- Wallarm options:
+      { wallarm_mode                = { type = "string", default = "off", one_of = { "off", "monitoring", "safe_blocking", "block" }, }, },
+      { wallarm_application         = { type = "integer", between = { 1, 2 ^ 31 }, }, },
+      { wallarm_parse_response      = { type = "boolean", default = false }, },
+      { wallarm_parse_websocket     = { type = "boolean", default = false }, },
+      { wallarm_unpack_response     = { type = "boolean", default = false }, },
+      { wallarm_partner_client_uuid = typedefs.uuid { auto = false, }, },
     },
 
     entity_checks = {
@@ -116,8 +123,14 @@ else
       { destinations = typedefs.destinations },
       { tags             = typedefs.tags },
       { service = { type = "foreign", reference = "services" }, },
+      -- Wallarm options:
+      { wallarm_mode                = { type = "string", default = "off", one_of = { "off", "monitoring", "safe_blocking", "block" }, }, },
+      { wallarm_application         = { type = "integer", between = { 1, 2 ^ 31 }, }, },
+      { wallarm_parse_response      = { type = "boolean", default = false }, },
+      { wallarm_parse_websocket     = { type = "boolean", default = false }, },
+      { wallarm_unpack_response     = { type = "boolean", default = false }, },
+      { wallarm_partner_client_uuid = typedefs.uuid { auto = false, }, },
     },
-
     entity_checks = {
       { conditional = { if_field = "protocols",
                         if_match = { elements = { type = "string", not_one_of = { "grpcs", "https", "tls", "tls_passthrough" }}},

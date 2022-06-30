@@ -1152,6 +1152,36 @@ return {
             This is where the Route proxies traffic to.
           ]]
         },
+        wallarm_mode = {
+          description = [[
+            Traffic processing mode. [Official documentation](https://docs.wallarm.com/admin-en/configure-parameters-en/#wallarm_mode).
+          ]]
+        },
+        wallarm_application = {
+          description = [[
+            Unique identifier of the protected application to be used in the Wallarm Cloud. [Official documentation](https://docs.wallarm.com/admin-en/configure-parameters-en/#wallarm_application).
+          ]]
+        },
+        wallarm_parse_response = {
+          description = [[
+            Whether to analyze the application responses. [Official documentation](https://docs.wallarm.com/admin-en/configure-parameters-en/#wallarm_parse_response).
+          ]]
+        },
+        wallarm_parse_websocket = {
+          description = [[
+            Force WebSockets messages processing. [Official documentation](https://docs.wallarm.com/admin-en/configure-parameters-en/#wallarm_parse_websocket).
+          ]]
+        },
+        wallarm_unpack_response = {
+          description = [[
+            Whether to decompress compressed data returned in the application response. [Official documentation](https://docs.wallarm.com/admin-en/configure-parameters-en/#wallarm_unpack_response).
+          ]]
+        },
+        wallarm_partner_client_uuid = {
+          description = [[
+            Unique identifier of the tenant for the multi-tenant Wallarm node. [Official documentation](https://docs.wallarm.com/admin-en/configure-parameters-en/#wallarm_partner_client_uuid).
+          ]]
+        },
         https_redirect_status_code = {
           description = [[
             The status code Kong responds with when all properties of a Route

@@ -2,6 +2,8 @@ return [[
 charset UTF-8;
 server_tokens off;
 
+variables_hash_max_size 2048;
+
 error_log ${{PROXY_ERROR_LOG}} ${{LOG_LEVEL}};
 
 lua_package_path       '${{LUA_PACKAGE_PATH}};;';
@@ -84,6 +86,9 @@ server {
     access_log ${{PROXY_ACCESS_LOG}};
     error_log  ${{PROXY_ERROR_LOG}} ${{LOG_LEVEL}};
 
+    # Enable Wallarm ACL module for the server.
+    disable_acl off;
+
 > if proxy_ssl_enabled then
 > for i = 1, #ssl_cert do
     ssl_certificate     $(ssl_cert[i]);
@@ -141,6 +146,20 @@ server {
         set $upstream_x_forwarded_prefix '';
         set $kong_proxy_mode             'http';
 
+        set $wallarm_mode                'off';
+        set $wallarm_application         '';
+        set $wallarm_parse_response      'off';
+        set $wallarm_parse_websocket     'off';
+        set $wallarm_unpack_response     'off';
+        set $wallarm_partner_client_uuid '';
+
+        wallarm_mode                $wallarm_mode;
+        wallarm_application         $wallarm_application;
+        wallarm_parse_response      $wallarm_parse_response;
+        wallarm_parse_websocket     $wallarm_parse_websocket;
+        wallarm_unpack_response     $wallarm_unpack_response;
+        wallarm_partner_client_uuid $wallarm_partner_client_uuid;
+
         proxy_http_version      1.1;
         proxy_buffering          on;
         proxy_request_buffering  on;
@@ -171,6 +190,13 @@ server {
         internal;
         default_type         '';
         set $kong_proxy_mode 'unbuffered';
+
+        wallarm_mode                $wallarm_mode;
+        wallarm_application         $wallarm_application;
+        wallarm_parse_response      $wallarm_parse_response;
+        wallarm_parse_websocket     $wallarm_parse_websocket;
+        wallarm_unpack_response     $wallarm_unpack_response;
+        wallarm_partner_client_uuid $wallarm_partner_client_uuid;
 
         proxy_http_version      1.1;
         proxy_buffering         off;
@@ -203,6 +229,13 @@ server {
         default_type         '';
         set $kong_proxy_mode 'unbuffered';
 
+        wallarm_mode                $wallarm_mode;
+        wallarm_application         $wallarm_application;
+        wallarm_parse_response      $wallarm_parse_response;
+        wallarm_parse_websocket     $wallarm_parse_websocket;
+        wallarm_unpack_response     $wallarm_unpack_response;
+        wallarm_partner_client_uuid $wallarm_partner_client_uuid;
+
         proxy_http_version      1.1;
         proxy_buffering          on;
         proxy_request_buffering off;
@@ -233,6 +266,13 @@ server {
         internal;
         default_type         '';
         set $kong_proxy_mode 'unbuffered';
+
+        wallarm_mode                $wallarm_mode;
+        wallarm_application         $wallarm_application;
+        wallarm_parse_response      $wallarm_parse_response;
+        wallarm_parse_websocket     $wallarm_parse_websocket;
+        wallarm_unpack_response     $wallarm_unpack_response;
+        wallarm_partner_client_uuid $wallarm_partner_client_uuid;
 
         proxy_http_version      1.1;
         proxy_buffering         off;
@@ -265,6 +305,13 @@ server {
         default_type         '';
         set $kong_proxy_mode 'grpc';
 
+        wallarm_mode                $wallarm_mode;
+        wallarm_application         $wallarm_application;
+        wallarm_parse_response      $wallarm_parse_response;
+        wallarm_parse_websocket     $wallarm_parse_websocket;
+        wallarm_unpack_response     $wallarm_unpack_response;
+        wallarm_partner_client_uuid $wallarm_partner_client_uuid;
+
         grpc_set_header      TE                 $upstream_te;
         grpc_set_header      X-Forwarded-For    $upstream_x_forwarded_for;
         grpc_set_header      X-Forwarded-Proto  $upstream_x_forwarded_proto;
@@ -288,6 +335,13 @@ server {
         internal;
         default_type         '';
         set $kong_proxy_mode 'http';
+
+        wallarm_mode                $wallarm_mode;
+        wallarm_application         $wallarm_application;
+        wallarm_parse_response      $wallarm_parse_response;
+        wallarm_parse_websocket     $wallarm_parse_websocket;
+        wallarm_unpack_response     $wallarm_unpack_response;
+        wallarm_partner_client_uuid $wallarm_partner_client_uuid;
 
         rewrite_by_lua_block       {;}
         access_by_lua_block        {;}

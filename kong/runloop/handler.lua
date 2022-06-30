@@ -1432,6 +1432,25 @@ return {
       var.upstream_x_forwarded_path   = forwarded_path
       var.upstream_x_forwarded_prefix = forwarded_prefix
 
+      local wallarm_ngx_boolean = function(flag)
+        if flag then
+          return "on"
+        else
+          return "off"
+        end
+      end
+      -- Wallarm route config:
+      var.wallarm_mode = route.wallarm_mode
+      if route.wallarm_application ~= nil and route.wallarm_application > 0 then
+        var.wallarm_application = tostring(route.wallarm_application)
+      end
+      var.wallarm_parse_response = wallarm_ngx_boolean(route.wallarm_parse_response)
+      var.wallarm_parse_websocket = wallarm_ngx_boolean(route.wallarm_parse_websocket)
+      var.wallarm_unpack_response = wallarm_ngx_boolean(route.wallarm_unpack_response)
+      if route.wallarm_partner_client_uuid ~= nil then
+        var.wallarm_partner_client_uuid = route.wallarm_partner_client_uuid
+      end
+
       -- At this point, the router and `balancer_setup_stage1` have been
       -- executed; detect requests that need to be redirected from `proxy_pass`
       -- to `grpc_pass`. After redirection, this function will return early
